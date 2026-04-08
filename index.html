@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday! 🎉</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome cho icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Confetti Container -->
+    <div id="confetti-container"></div>
+    
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-item">🎈</div>
+        <div class="floating-item">🎂</div>
+        <div class="floating-item">🎁</div>
+        <div class="floating-item">✨</div>
+        <div class="floating-item">🎈</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="main-title" id="main-title">🎉 
+                <span class="name-highlight">Nguyễn Thúy Hường🌸</span>
+            </h1>
+            <div class="subtitle">
+                <p class="date-text">09 April</p>
+                <p class="wish-text">Wishing you the happiest day 🌟</p>
+            </div>
+        </header>
+
+        <!-- Image Carousel -->
+        <section class="image-section">
+            <div class="carousel-container">
+                <div class="carousel" id="carousel">
+                    <div class="carousel-item active">
+                        <img src="2.jpg" alt="Birthday Photo 1" class="carousel-image">
+                        <div class="image-overlay">
+                            <span class="image-caption">Beautiful Moments</span>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="1.jpg" alt="Birthday Photo 2" class="carousel-image">
+                        <div class="image-overlay">
+                            <span class="image-caption">Sweet Memories</span>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="3.jpg" alt="Birthday Photo 3" class="carousel-image">
+                        <div class="image-overlay">
+                            <span class="image-caption">Happy Times</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Carousel Controls -->
+                <button class="carousel-btn prev" id="prevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-btn next" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <!-- Carousel Indicators -->
+                <div class="carousel-indicators">
+                    <span class="indicator active" data-slide="0"></span>
+                    <span class="indicator" data-slide="1"></span>
+                    <span class="indicator" data-slide="2"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Surprise Letter -->
+        <section class="surprise-section">
+            <div class="scene" id="scene">
+                <div class="envelope-wrap" id="envelope" role="button" tabindex="0" aria-label="Open letter">
+                    <div class="envelope">
+                        <div class="envelope-base"></div>
+                        <div class="flap"></div>
+                        <div class="seal">💌</div>
+                    </div>
+                    <p class="hint">Bức thư gửi cậu</p>
+                </div>
+
+                <div class="overlay" id="overlay" aria-hidden="true">
+                    <article class="letter" id="letter" aria-live="polite">
+                        <h2 class="letter-title">Mau khỏe lại nhaa 💊</h2>
+                        <p class="letter-body">Tớ biết là hiện tại cậu ở nhà khá khó chịu.
+Nhưng rồi sẽ ổn thôi! Cố lên nhaaa 💛</p>
+                        <p class="signature">N.Sanggg</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Music Control -->
+        <section class="music-section">
+            <audio id="birthdayAudio" loop preload="auto">
+                <!-- File nhạc Happy Birthday -->
+                <source src="hppd.mp3" type="audio/mpeg">
+                <source src="hppd.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">
+                Wishing you a wonderful day full of smiles and joy 🌈
+            </p>
+        </footer>
+    </div>
+
+    <!-- Image Preview Modal -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-image-container">
+                <span class="modal-close">&times;</span>
+                <img id="modalImage" src="" alt="Preview">
+                <div class="modal-image-caption" id="modalImageCaption"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-nav-btn modal-prev" id="modalPrevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="download-btn" id="downloadBtn">
+                    <i class="fas fa-download"></i> Tải xuống
+                </button>
+                <button class="modal-nav-btn modal-next" id="modalNextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
