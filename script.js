@@ -630,6 +630,15 @@ function initializeSurpriseButton() {
         scene.classList.add('open');
         document.body.classList.add('letter-open');
         overlay.setAttribute('aria-hidden', 'false');
+        window.setTimeout(function () {
+            const letterRect = letter.getBoundingClientRect();
+            const viewportH = window.innerHeight || document.documentElement.clientHeight;
+            const targetY = window.scrollY + letterRect.top - Math.max(24, viewportH * 0.12);
+            window.scrollTo({
+                top: Math.max(0, targetY),
+                behavior: 'smooth'
+            });
+        }, 80);
         resetLetterWordStates();
         var gen = ++letterWordAnimGen;
         window.setTimeout(function () {
