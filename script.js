@@ -4,12 +4,59 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Khởi tạo các hiệu ứng khi trang load
     initializeAnimations();
+    autoResizeText();
     initializeCarousel();
     initializeSurpriseButton();
     initializeMusicPlayer();
     initializeImageModal();
     createConfetti();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(autoResizeText, 80);
+    });
+    window.addEventListener('orientationchange', autoResizeText);
 });
+
+function autoResizeText() {
+    const titleEl = document.getElementById('main-title');
+    const nameEl = document.getElementById('title-text');
+    if (!titleEl || !nameEl) return;
+
+    const minPx = 28;
+    const maxPx = 66;
+    const wrapperEl = titleEl.parentElement || titleEl;
+    const wrapperStyle = window.getComputedStyle(wrapperEl);
+    const horizontalPadding =
+        parseFloat(wrapperStyle.paddingLeft || '0') +
+        parseFloat(wrapperStyle.paddingRight || '0');
+
+    let iconsWidth = 0;
+    titleEl.querySelectorAll('.title-icon').forEach((iconEl) => {
+        iconsWidth += iconEl.getBoundingClientRect().width;
+    });
+
+    const titleGap = parseFloat(window.getComputedStyle(titleEl).columnGap || '0');
+    const reserveSpace = iconsWidth + titleGap * 2 + 18;
+    const targetWidth = Math.max(120, wrapperEl.clientWidth - horizontalPadding - reserveSpace);
+
+    nameEl.style.fontSize = `${maxPx}px`;
+    nameEl.style.transform = 'scale(1)';
+    nameEl.style.maxWidth = `${targetWidth}px`;
+
+    if (nameEl.scrollWidth <= targetWidth) return;
+
+    const ratio = targetWidth / nameEl.scrollWidth;
+    const nextSize = Math.floor(maxPx * ratio);
+    const finalSize = Math.max(minPx, nextSize);
+    nameEl.style.fontSize = `${finalSize}px`;
+
+    if (finalSize === minPx && nameEl.scrollWidth > targetWidth) {
+        const safeScale = Math.max(0.82, targetWidth / nameEl.scrollWidth);
+        nameEl.style.transform = `scale(${safeScale})`;
+    }
+}
 
 /**
  * Nhạc nền RiverFlowsinYou.mp4 — tự phát khi vào trang.
@@ -423,6 +470,11 @@ function initializeAnimations() {
     if (mainTitle) {
         setTimeout(() => {
             mainTitle.classList.add('typing');
+            autoResizeText();
+
+            window.setTimeout(() => {
+                mainTitle.classList.remove('typing');
+            }, 1700);
         }, 1000);
     }
     
@@ -469,14 +521,14 @@ function createConfettiPiece(container, colors) {
 // Tạo floating elements liên tục
 function createFloatingElements() {
     const elementsContainer = document.querySelector('.floating-elements');
-    const elements = ['🎈', '🎂', '🎁', '✨', '🌟', '🎀', '🎊', '🎉'];
+    const elements = ['🌸', '🌷', '🍃', '✨', '💫', '🕊️', '💖', '🌼'];
     
     setInterval(() => {
         const element = document.createElement('div');
         element.className = 'floating-item';
         element.textContent = elements[Math.floor(Math.random() * elements.length)];
         element.style.left = Math.random() * 100 + '%';
-        element.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        element.style.animationDuration = (Math.random() * 5 + 14) + 's';
         
         elementsContainer.appendChild(element);
         
@@ -485,8 +537,8 @@ function createFloatingElements() {
             if (element.parentNode) {
                 element.parentNode.removeChild(element);
             }
-        }, 7000);
-    }, 3000);
+        }, 20000);
+    }, 4200);
 }
 
 // --- Nội dung thư (từng từ) ---
@@ -494,7 +546,7 @@ var LETTER_COPY = {
     title: ['✨Mau', 'khỏe', 'lại', 'nhaa✨'],
     lines: [
         ['Tớ', 'biết', 'là', 'hiện', 'tại', 'cậu', 'ở', 'nhà', 'khá', 'khó', 'chịu.'],
-        ['Nhưng', 'rồi', 'sẽ', 'ổn', 'thôi!', 'Cố', 'lên', 'nhaaa', '🎁'],
+        ['Nhưng', 'rồi', 'sẽ', 'ổn', 'thôi!', 'Cố', 'lên', 'nhaaa', '💖'],
     ],
     sign: ['ng.sang02'],
 };
@@ -576,6 +628,7 @@ function initializeSurpriseButton() {
 
     function openLetter() {
         scene.classList.add('open');
+        document.body.classList.add('letter-open');
         overlay.setAttribute('aria-hidden', 'false');
         resetLetterWordStates();
         var gen = ++letterWordAnimGen;
@@ -588,6 +641,7 @@ function initializeSurpriseButton() {
     function closeLetter() {
         letterWordAnimGen += 1;
         scene.classList.remove('open');
+        document.body.classList.remove('letter-open');
         overlay.setAttribute('aria-hidden', 'true');
         resetLetterWordStates();
     }
@@ -634,6 +688,6 @@ function createSurpriseConfetti() {
     return;
 }
 // Console message cho developer
-console.log('🎉 Happy Birthday Website loaded successfully!');
+console.log('🌸 Gentle theme loaded successfully!');
 console.log('🎵 Music player with Web Audio API');
 console.log('✨ Enjoy the animations and effects!');
