@@ -603,6 +603,14 @@ body {
     animation: fadeInUp 1s ease-out 2.5s both;
 }
 
+body.letter-open .footer {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 220ms ease, transform 220ms ease, visibility 220ms ease;
+}
+
 .footer-text {
     font-size: clamp(1rem, 2.8vw, 1.28rem);
     color: #fff9fd;
@@ -664,14 +672,7 @@ body {
 
 @media (max-width: 768px) {
     body.letter-open .surprise-section {
-        margin-bottom: 96px;
-    }
-
-    body.letter-open .footer {
-        opacity: 0.2;
-        transform: translateY(6px);
-        pointer-events: none;
-        transition: opacity 260ms ease, transform 260ms ease;
+        margin-bottom: 36px;
     }
 
     .container {
