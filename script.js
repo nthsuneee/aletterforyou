@@ -546,7 +546,7 @@ var LETTER_COPY = {
     title: ['✨Mau', 'khỏe', 'lại', 'nhaa✨'],
     lines: [
         ['Tớ', 'biết', 'là', 'thời', 'gian', 'này', 'cậu', 'phải', 'ở', 'nhà', 'nên', 'cũng', 'khá', 'khó', 'chịu', 'và', 'buồn', 'chán.'],
-        ['Nhưng', 'rồi', 'sẽ', 'ổn', 'thôi!', 'Cố', 'lên', 'nhaaa', '💖'],
+        ['Nhưng', 'rồi', 'sẽ', 'ổn', 'thôi!', 'Cố', 'lên', 'nhaaa', '🌷'],
     ],
     sign: ['ng.sang02'],
 };
