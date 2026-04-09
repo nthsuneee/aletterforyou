@@ -619,6 +619,7 @@ function initializeSurpriseButton() {
     var envelope = document.getElementById('envelope');
     var overlay = document.getElementById('overlay');
     var letter = document.getElementById('letter');
+    var surpriseSection = scene ? scene.closest('.surprise-section') : null;
 
     if (!scene || !envelope || !overlay || !letter) {
         return;
@@ -630,6 +631,13 @@ function initializeSurpriseButton() {
         scene.classList.add('open');
         document.body.classList.add('letter-open');
         overlay.setAttribute('aria-hidden', 'false');
+        if (surpriseSection) {
+            const viewportH = window.innerHeight || document.documentElement.clientHeight;
+            const letterH = letter.offsetHeight;
+            const overflowScroll = Math.max(0, letterH + 56 - viewportH);
+            const extraScroll = Math.max(60, overflowScroll);
+            surpriseSection.style.setProperty('--letter-extra-scroll', `${extraScroll}px`);
+        }
         window.setTimeout(function () {
             const letterRect = letter.getBoundingClientRect();
             const viewportH = window.innerHeight || document.documentElement.clientHeight;
@@ -652,6 +660,9 @@ function initializeSurpriseButton() {
         scene.classList.remove('open');
         document.body.classList.remove('letter-open');
         overlay.setAttribute('aria-hidden', 'true');
+        if (surpriseSection) {
+            surpriseSection.style.removeProperty('--letter-extra-scroll');
+        }
         resetLetterWordStates();
     }
 
