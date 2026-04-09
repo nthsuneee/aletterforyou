@@ -8,7 +8,7 @@
     <!-- Font Awesome cho icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,500;1,400&family=Poppins:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Confetti Container -->
@@ -91,23 +91,19 @@
 
                 <div class="overlay" id="overlay" aria-hidden="true">
                     <article class="letter" id="letter" aria-live="polite">
-                        <h2 class="letter-title">✨Mau khỏe lại nhaa✨</h2>
-                        <p class="letter-body">Tớ biết là hiện tại cậu ở nhà khá khó chịu.
-Nhưng rồi sẽ ổn thôi! Cố lên nhaaa 🎁</p>
-                        <p class="signature">ng.sang02</p>
+                        <h2 class="letter-title" id="letterTitleEl"></h2>
+                        <div class="letter-body" id="letterBodyEl"></div>
+                        <p class="signature" id="letterSignEl"></p>
                     </article>
                 </div>
             </div>
         </section>
 
-        <!-- Music Control -->
-        <section class="music-section">
-            <audio id="birthdayAudio" loop preload="auto">
-                <!-- File nhạc Happy Birthday -->
-                <source src="hppd.mp3" type="audio/mpeg">
-                <source src="hppd.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
+        <!-- Nhạc nền: RiverFlowsinYou.mp4 (phát ẩn, autoplay trong JS) -->
+        <section class="music-section music-section--sr" aria-hidden="true">
+            <video id="bgMusic" class="bg-music-video" playsinline webkit-playsinline loop preload="auto" muted>
+                <source src="RiverFlowsinYou.mp4" type="video/mp4">
+            </video>
         </section>
 
         <!-- Footer -->
