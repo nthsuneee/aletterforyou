@@ -11,33 +11,60 @@ document.addEventListener('DOMContentLoaded', function() {
     createConfetti();
 });
 
-// Khởi tạo music player với Web Audio API
+/**
+ * Nhạc nền RiverFlowsinYou.mp4 — tự phát khi vào trang.
+ * Trình duyệt thường chặn autoplay có tiếng: thử bật tiếng trước;
+ * nếu lỗi thì phát muted rồi bật tiếng sau lần tương tác đầu tiên.
+ */
 function initializeMusicPlayer() {
-    const musicBtn = document.getElementById('musicBtn');
-    const birthdayAudio = document.getElementById('birthdayAudio');
-    let isPlaying = false;
+    const v = document.getElementById('bgMusic');
+    if (!v) return;
 
-    // Đảm bảo audio sẵn sàng
-    birthdayAudio.volume = 0.7; // âm lượng vừa phải
+    v.volume = 0.65;
 
-    musicBtn.addEventListener('click', async () => {
+    function bindUnlockOnce() {
+        const unlock = function () {
+            v.muted = false;
+            v.play().catch(function () {});
+            document.removeEventListener('pointerdown', unlock);
+            document.removeEventListener('touchstart', unlock);
+            document.removeEventListener('keydown', unlock);
+        };
+        document.addEventListener('pointerdown', unlock, { once: true });
+        document.addEventListener('touchstart', unlock, { once: true, passive: true });
+        document.addEventListener('keydown', unlock, { once: true });
+    }
+
+    async function startAutoplay() {
+        v.muted = false;
         try {
-            if (!isPlaying) {
-                await birthdayAudio.play();
-                musicBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause Birthday Song</span>';
-                musicBtn.classList.add('playing');
-                isPlaying = true;
-            } else {
-                birthdayAudio.pause();
-                musicBtn.innerHTML = '<i class="fas fa-music"></i><span>Play Birthday Song</span>';
-                musicBtn.classList.remove('playing');
-                isPlaying = false;
-            }
-        } catch (err) {
-            console.error("Không thể phát nhạc:", err);
-            musicBtn.innerHTML = '<i class="fas fa-music"></i><span>Audio not supported</span>';
+            await v.play();
+            return;
+        } catch (e) {
+            /* autoplay có tiếng bị chặn */
         }
-    });
+
+        v.muted = true;
+        try {
+            await v.play();
+            bindUnlockOnce();
+        } catch (e2) {
+            bindUnlockOnce();
+        }
+    }
+
+    if (v.readyState >= 2) {
+        startAutoplay();
+    } else {
+        v.addEventListener(
+            'canplay',
+            function onReady() {
+                v.removeEventListener('canplay', onReady);
+                startAutoplay();
+            },
+            { once: true }
+        );
+    }
 }
 
 // Tạo nhạc Happy Birthday bằng Web Audio API
@@ -462,25 +489,107 @@ function createFloatingElements() {
     }, 3000);
 }
 
+// --- Nội dung thư (từng từ) ---
+var LETTER_COPY = {
+    title: ['✨Mau', 'khỏe', 'lại', 'nhaa✨'],
+    lines: [
+        ['Tớ', 'biết', 'là', 'hiện', 'tại', 'cậu', 'ở', 'nhà', 'khá', 'khó', 'chịu.'],
+        ['Nhưng', 'rồi', 'sẽ', 'ổn', 'thôi!', 'Cố', 'lên', 'nhaaa', '🎁'],
+    ],
+    sign: ['ng.sang02'],
+};
+
+function letterEscapeHtml(text) {
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function letterSpanWord(w) {
+    return '<span class="letter-word">' + letterEscapeHtml(w) + '</span>';
+}
+
+function buildLetterWordsDOM() {
+    var titleEl = document.getElementById('letterTitleEl');
+    var bodyEl = document.getElementById('letterBodyEl');
+    var signEl = document.getElementById('letterSignEl');
+    if (!titleEl || !bodyEl || !signEl) return;
+
+    titleEl.innerHTML = LETTER_COPY.title.map(letterSpanWord).join('');
+    bodyEl.innerHTML = LETTER_COPY.lines
+        .map(function (line) {
+            return '<p class="letter-line">' + line.map(letterSpanWord).join('') + '</p>';
+        })
+        .join('');
+    signEl.innerHTML = LETTER_COPY.sign.map(letterSpanWord).join('');
+}
+
+function letterPrefersReducedMotion() {
+    return (
+        window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+}
+
+function resetLetterWordStates() {
+    document.querySelectorAll('#letter .letter-word').forEach(function (el) {
+        el.classList.remove('is-on');
+    });
+}
+
+var letterWordAnimGen = 0;
+
+function playLetterWordsAnimated(fromGen) {
+    var words = document.querySelectorAll('#letter .letter-word');
+    if (letterPrefersReducedMotion()) {
+        words.forEach(function (el) {
+            el.classList.add('is-on');
+        });
+        return;
+    }
+    var delayMs = 56;
+    var i = 0;
+    function step() {
+        if (fromGen !== letterWordAnimGen) return;
+        if (i >= words.length) return;
+        words[i].classList.add('is-on');
+        i += 1;
+        if (i < words.length) {
+            window.setTimeout(step, delayMs);
+        }
+    }
+    step();
+}
+
 // Khởi tạo nút surprise
 function initializeSurpriseButton() {
-    const scene = document.getElementById('scene');
-    const envelope = document.getElementById('envelope');
-    const overlay = document.getElementById('overlay');
-    const letter = document.getElementById('letter');
+    var scene = document.getElementById('scene');
+    var envelope = document.getElementById('envelope');
+    var overlay = document.getElementById('overlay');
+    var letter = document.getElementById('letter');
 
     if (!scene || !envelope || !overlay || !letter) {
         return;
     }
 
+    buildLetterWordsDOM();
+
     function openLetter() {
         scene.classList.add('open');
         overlay.setAttribute('aria-hidden', 'false');
+        resetLetterWordStates();
+        var gen = ++letterWordAnimGen;
+        window.setTimeout(function () {
+            if (gen !== letterWordAnimGen) return;
+            playLetterWordsAnimated(gen);
+        }, 400);
     }
 
     function closeLetter() {
+        letterWordAnimGen += 1;
         scene.classList.remove('open');
         overlay.setAttribute('aria-hidden', 'true');
+        resetLetterWordStates();
     }
 
     envelope.addEventListener('click', openLetter);
@@ -524,7 +633,6 @@ function createFireworkEffect() {
 function createSurpriseConfetti() {
     return;
 }
-
 // Console message cho developer
 console.log('🎉 Happy Birthday Website loaded successfully!');
 console.log('🎵 Music player with Web Audio API');
