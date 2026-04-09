@@ -325,6 +325,10 @@ body {
     transition: margin-bottom 320ms ease;
 }
 
+body.letter-open .surprise-section {
+    margin-bottom: calc(30px + var(--letter-extra-scroll, 0px));
+}
+
 .scene {
     position: relative;
     z-index: 2;
@@ -419,8 +423,10 @@ body {
 }
 
 .overlay {
-    position: fixed;
-    inset: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     background: transparent;
     backdrop-filter: none;
     display: grid;
@@ -671,8 +677,12 @@ body.letter-open .footer {
 }
 
 @media (max-width: 768px) {
+    .letter {
+        margin-bottom: 40px;
+    }
+
     body.letter-open .surprise-section {
-        margin-bottom: 36px;
+        margin-bottom: calc(30px + var(--letter-extra-scroll, 0px));
     }
 
     .container {
